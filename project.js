@@ -9,12 +9,47 @@
 
 const prompt = require('prompt-sync')(); // import prompt-sync module to use prompt
 
+
+
+// ----------- GLOBAL VARIABLES ----------- //
+
+const ROWS = 3;
+const COLS = 3;
+
+const SYMBOLS_COUNTS = {
+    // "A": 2,
+    // "B": 4,
+    // "C": 6,
+    // "D": 8
+
+    "🍒" : 2,
+    "🍊" : 4,
+    "🍇" : 6,
+    "🍌" : 8
+}
+
+const SYMBOLS_VALUES = {
+    // "A" : 5,
+    // "B" : 4,
+    // "C" : 3,
+    // "D" : 2
+
+    "🍒" : 5,
+    "🍊" : 4,
+    "🍇" : 3,
+    "🍌" : 2
+
+}
+
+
+
+
 const deposit = () => {
     while (true) {
         const depositAmount = prompt("How much would you like to deposit?: ");
         const numberDepositAmount = parseFloat(depositAmount); // convert string to number
 
-        if (isNaN(numberDepositAmount) || numberDepositAmount <= 0) { // check if the input is a number
+        if (isNaN(numberDepositAmount) || numberDepositAmount <= 0) { // check if the input is a number and greater than 0
             console.log("Invalid input. Please try again.");
         } else {
             return numberDepositAmount;
@@ -27,13 +62,30 @@ const getNumberOfLines = () => {
         const lines = prompt("How many lines would you like to bet? (1-3): ");
         const numberOfLines = parseFloat(lines); // convert string to number
 
-        if (isNaN(numberOfLines) || numberOfLines < 1 || numberOfLines >= 3) { // check if the input is a number
-            console.log("Invalid input. Please try again.");
+        if (isNaN(numberOfLines) || numberOfLines < 1 || numberOfLines >= 3) { // 
+            console.log("Invalid line. Please try again.");
         } else {
             return numberOfLines;
         }
     }
 };
 
+const collectBetAmount = (numberOfLines, balance) => {
+    while(true){
+        const bet = prompt("How much would you like to bet per lines?: ");
+        const numberOfBet = parseFloat(bet); // convert string to number
+
+        if (isNaN(numberOfBet) || numberOfBet <= 0 || numberOfBet >= balance / numberOfLines) {
+            console.log("Invalid bet. Please try again.");
+        } else {
+            return numberOfBet;
+        }
+    }
+};
+
+
+
+
 let balance = deposit();
 const numberOfLines = getNumberOfLines();
+const betAmount = collectBetAmount(numberOfLines, balance);
