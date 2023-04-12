@@ -14,7 +14,7 @@ const deposit = () => {
         const depositAmount = prompt("How much would you like to deposit?: ");
         const numberDepositAmount = parseFloat(depositAmount); // convert string to number
 
-        if (isNaN(numberDepositAmount)) { // check if the input is a number
+        if (isNaN(numberDepositAmount) || numberDepositAmount <= 0) { // check if the input is a number
             console.log("Invalid input. Please try again.");
         } else {
             return numberDepositAmount;
@@ -22,4 +22,18 @@ const deposit = () => {
     }
 };
 
-const depositAmount = deposit();
+const getNumberOfLines = () => {
+    while (true) {
+        const lines = prompt("How many lines would you like to bet? (1-3): ");
+        const numberOfLines = parseFloat(lines); // convert string to number
+
+        if (isNaN(numberOfLines) || numberOfLines < 1 || numberOfLines >= 3) { // check if the input is a number
+            console.log("Invalid input. Please try again.");
+        } else {
+            return numberOfLines;
+        }
+    }
+};
+
+let balance = deposit();
+const numberOfLines = getNumberOfLines();
