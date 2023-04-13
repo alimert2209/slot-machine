@@ -3,9 +3,9 @@
 // 2 - Determine number of lines to bet, the goal is to get 3 of the same symbol on a line 🆗
 // 3 - Collect a bet amount per line 🆗
 // 4 - Spin the slot machine 🆗
-// 5 - Check if the player won 
-// 6 - Pay the player
-// 7 - Repeat
+// 5 - Check if the player won 🆗
+// 6 - Pay the player 🆗
+// 7 - Repeat until the player runs out of money 🆗
 
 const prompt = require('prompt-sync')(); // import prompt-sync module to use prompt
 
@@ -144,11 +144,32 @@ const getWinnings = (rows, bet, lines) => {
 
 
 
-let balance = deposit();
-const lines = getNumberOfLines();
-const bet = collectBetAmount(lines, balance);
-const reels = spin();
-const rows = transposed(reels);
-printReels(rows);
-const winnings = getWinnings(rows, bet, lines);
-console.log(`\nYou won ${winnings}!`);
+const game = () => {
+    let balance = deposit();
+
+    while (true) {
+        console.log(`\nYour balance is ${balance}.`);
+        const lines = getNumberOfLines();
+        const bet = collectBetAmount(lines, balance);
+        balance -= bet * lines;
+        const reels = spin();
+        const rows = transposed(reels);
+        printReels(rows);
+        const winnings = getWinnings(rows, bet, lines);
+        balance += winnings;
+        console.log(`\nYou won ${winnings}!`);
+
+        if (balance <= 0) {
+            console.log("You ran out of money. Game over.");
+            break;
+        }
+
+        const playAgain = prompt("Would you like to play again? (y/n): ");
+        if (playAgain != "y") {
+            console.log("Thank you for playing!");
+            break;
+        }
+    }
+};
+
+game();
