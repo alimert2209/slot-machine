@@ -51,7 +51,7 @@ const getNumberOfLines = () => {
         const lines = prompt("How many lines would you like to bet? (1-3): ");
         const numberOfLines = parseFloat(lines); // convert string to number
 
-        if (isNaN(numberOfLines) || numberOfLines < 1 || numberOfLines >= 3) { // 
+        if (isNaN(numberOfLines) || numberOfLines < 1 || numberOfLines > 3) { // 
             console.log("Invalid line. Please try again.");
         } else {
             return numberOfLines;
@@ -120,12 +120,35 @@ const printReels = (rows) => {
     }
 };
 
+const getWinnings = (rows, bet, lines) => {
+    let winnings = 0;
+
+    for (let row = 0; row < lines; row++) {
+        const symbols = rows[row];
+        let allSame = true;
+
+        for (const symbol of symbols) {
+            if (symbol != symbols[0]) {
+                allSame = false;
+                break;
+            }
+        }
+
+        if (allSame) {
+            winnings += bet * SYMBOLS_VALUES[symbols[0]];
+        }
+    }
+
+    return winnings;
+};
 
 
 
 let balance = deposit();
-const numberOfLines = getNumberOfLines();
-const betAmount = collectBetAmount(numberOfLines, balance);
+const lines = getNumberOfLines();
+const bet = collectBetAmount(lines, balance);
 const reels = spin();
-const transposedResult = transposed(reels);
-printReels(transposedResult);
+const rows = transposed(reels);
+printReels(rows);
+const winnings = getWinnings(rows, bet, lines);
+console.log(`\nYou won ${winnings}!`);
