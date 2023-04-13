@@ -1,9 +1,9 @@
 // ----------- Slot machine project-----------
-// 1 - Deposit some money
-// 2 - Determine number of lines to bet, the goal is to get 3 of the same symbol on a line
-// 3 - Collect a bet amount
-// 4 - Spin the slot machine
-// 5 - Check if the player won
+// 1 - Deposit some money 🆗
+// 2 - Determine number of lines to bet, the goal is to get 3 of the same symbol on a line 🆗
+// 3 - Collect a bet amount per line 🆗
+// 4 - Spin the slot machine 🆗
+// 5 - Check if the player won 
 // 6 - Pay the player
 // 7 - Repeat
 
@@ -17,17 +17,17 @@ const ROWS = 3;
 const COLS = 3;
 
 const SYMBOLS_COUNTS = {
-    "A": 2,
-    "B": 4,
-    "C": 6,
-    "D": 8
+    "🍒": 2,
+    "🍊": 4,
+    "🍇": 6,
+    "🍏": 8
 }
 
 const SYMBOLS_VALUES = {
-    "A": 5,
-    "B": 4,
-    "C": 3,
-    "D": 2
+    "🍒": 5,
+    "🍊": 4,
+    "🍇": 3,
+    "🍏": 2
 }
 
 
@@ -81,9 +81,10 @@ const spin = () => {
         }
     }
 
-    const reels = [[], [], []]; // each nested array is a column of slot machine
+    const reels = [];
 
     for (let i = 0; i < COLS; i++) {
+        reels.push([]);
         const reelSymbols = [...symbols]; // copy symbols array
         for (let j = 0; j < ROWS; j++) {
             const randomIndex = Math.floor(Math.random() * symbols.length);
@@ -94,10 +95,37 @@ const spin = () => {
     return reels;
 };
 
+const transposed = (reels) => {
+    const rows = [];
+
+    for (let i = 0; i < ROWS; i++) {
+        rows.push([]);
+        for (let j = 0; j < COLS; j++) {
+            rows[i].push(reels[j][i]);
+        }
+    }
+    return rows;
+};
+
+const printReels = (rows) => {
+    for (const row of rows) {
+        let rowString = "";
+        for (const [i, symbol] of row.entries()) {
+            rowString += symbol;
+            if (i < row.length - 1) {
+                rowString += " | ";
+            }
+        }
+        console.log(rowString);
+    }
+};
 
 
 
-const spinResult = spin();
+
 let balance = deposit();
 const numberOfLines = getNumberOfLines();
 const betAmount = collectBetAmount(numberOfLines, balance);
+const reels = spin();
+const transposedResult = transposed(reels);
+printReels(transposedResult);
