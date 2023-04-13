@@ -17,28 +17,17 @@ const ROWS = 3;
 const COLS = 3;
 
 const SYMBOLS_COUNTS = {
-    // "A": 2,
-    // "B": 4,
-    // "C": 6,
-    // "D": 8
-
-    "🍒" : 2,
-    "🍊" : 4,
-    "🍇" : 6,
-    "🍌" : 8
+    "A": 2,
+    "B": 4,
+    "C": 6,
+    "D": 8
 }
 
 const SYMBOLS_VALUES = {
-    // "A" : 5,
-    // "B" : 4,
-    // "C" : 3,
-    // "D" : 2
-
-    "🍒" : 5,
-    "🍊" : 4,
-    "🍇" : 3,
-    "🍌" : 2
-
+    "A": 5,
+    "B": 4,
+    "C": 3,
+    "D": 2
 }
 
 
@@ -71,7 +60,7 @@ const getNumberOfLines = () => {
 };
 
 const collectBetAmount = (numberOfLines, balance) => {
-    while(true){
+    while (true) {
         const bet = prompt("How much would you like to bet per lines?: ");
         const numberOfBet = parseFloat(bet); // convert string to number
 
@@ -83,9 +72,32 @@ const collectBetAmount = (numberOfLines, balance) => {
     }
 };
 
+const spin = () => {
+    const symbols = []
+
+    for (const [symbol, count] of Object.entries(SYMBOLS_COUNTS)) {
+        for (let i = 0; i < count; i++) {
+            symbols.push(symbol);
+        }
+    }
+
+    const reels = [[], [], []]; // each nested array is a column of slot machine
+
+    for (let i = 0; i < COLS; i++) {
+        const reelSymbols = [...symbols]; // copy symbols array
+        for (let j = 0; j < ROWS; j++) {
+            const randomIndex = Math.floor(Math.random() * symbols.length);
+            const selectedSymbol = reelSymbols[randomIndex];
+            reels[i].push(selectedSymbol);
+        }
+    }
+    return reels;
+};
 
 
 
+
+const spinResult = spin();
 let balance = deposit();
 const numberOfLines = getNumberOfLines();
 const betAmount = collectBetAmount(numberOfLines, balance);
